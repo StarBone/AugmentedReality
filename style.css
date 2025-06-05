@@ -37,6 +37,13 @@ model-viewer {
   border: 1.5px solid #2563eb;
   outline: none;
 }
+.delete-btn {
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(239,68,68,0.15);
+}
+.delete-btn:hover {
+  background: #b91c1c !important;
+}
 @media (max-width: 640px) {
   body {
     padding: 0.5rem;
