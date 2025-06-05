@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Import Model - AR Model Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen py-4 px-10">
+  <div class="flex flex-col sm:flex-row sm:justify-between mb-4 items-start sm:items-center">
+    <div class="flex items-center w-full justify-between bg-white from-blue-50 via-white to-green-50 rounded-2xl shadow-md px-4 py-2 border border-blue-100">
+      <div class="flex items-center gap-3">
+        <h1 class="text-xl sm:text-1xl font-bold bg-black from-blue-600 via-green-400 to-blue-500 bg-clip-text text-transparent drop-shadow-lg tracking-tight">Import Model</h1>
+      </div>
+      <div class="flex items-center">
+        <button id="hamburger" class="sm:hidden block p-2 focus:outline-none rounded-lg border border-blue-200 bg-white shadow transition hover:bg-blue-50 active:scale-95 ml-2">
+          <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        <nav id="navMenu" class="hidden sm:flex flex-col sm:flex-row gap-2 sm:gap-1 absolute sm:static right-4 top-20 bg-white sm:bg-transparent rounded-xl shadow-lg sm:shadow-none p-4 sm:p-0 z-50 border border-blue-100 sm:border-0 transition-all duration-200">
+          <a href="index.html" class="block px-4 py-2 rounded-lg text-blue-500 hover:underline hover:bg-blue-50 transition">Home</a>
+          <a href="import.html" class="block px-4 py-2 rounded-lg text-blue-700 font-bold underline hover:bg-blue-50 transition">Import Model</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <form id="importForm" class="bg-white p-6 rounded-xl shadow max-w-md mx-auto">
+    <h2 class="text-xl font-semibold mb-4">Import Model</h2>
+    <input id="modelName" type="text" placeholder="Model Name" class="border p-2 w-full mb-4" />
+    <input id="modelFile" type="file" accept=".glb,.gltf" class="border p-2 w-full mb-4" />
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Upload</button>
+  </form>
+
+  <script>
+    const client = window.supabase.createClient('https://bgtzemfgqfbxjhbvuept.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJndHplbWZncWZieGpoYnZ1ZXB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMzYzMDEsImV4cCI6MjA2NDcxMjMwMX0.6H1jQoDvcZ9GwDXbIkCBnHq_A0tk19jcXIPwmXTexlo');
+
+    document.getElementById('importForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('modelName').value;
+      const file = document.getElementById('modelFile').files[0];
+      if (!name || !file) {
+        alert('Nama model dan file harus diisi!');
+        return;
+      }
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      try {
+        const { data: uploadData, error: uploadError } = await client.storage.from('models').upload(fileName, file);
+        if (!uploadError) {
+          const fileUrl = client.storage.from('models').getPublicUrl(fileName).data.publicUrl;
+          await client.from('models').insert([{ name, url: fileUrl }]);
+          document.getElementById('modelName').value = '';
+          document.getElementById('modelFile').value = '';
+          alert('Model berhasil diupload!');
+        } else {
+          alert('Upload failed: ' + uploadError.message);
+        }
+      } catch (err) {
+        alert('Terjadi error: ' + err.message);
+      }
+    });
+
+    // Hamburger menu logic
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    hamburger.addEventListener('click', () => {
+      navMenu.classList.toggle('hidden');
+    });
+    // Hide menu on click outside (mobile)
+    document.addEventListener('click', (e) => {
+      if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+        navMenu.classList.add('hidden');
+      }
+    });
+  </script>
+
+  <style>
+    /* Navbar gradient and shadow */
+    .navbar-gradient {
+      background: linear-gradient(90deg, #e0e7ff 0%, #f0fdf4 100%);
+      box-shadow: 0 4px 24px 0 rgba(59, 130, 246, 0.08);
+    }
+    /* Hamburger animation */
+    #hamburger:active svg {
+      transform: scale(0.92) rotate(-8deg);
+      filter: drop-shadow(0 2px 6px #3b82f6aa);
+    }
+    #navMenu {
+      min-width: 150px;
+    }
+    #navMenu a {
+      font-size: 1.08rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, color 0.2s;
+    }
+    #navMenu a.active, #navMenu a:focus {
+      background: linear-gradient(90deg, #2563eb22 0%, #22d3ee22 100%);
+      color: #2563eb;
+    }
+  </style>
+</body>
+</html>
