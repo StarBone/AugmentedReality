@@ -1,0 +1,62 @@
+/* AR Model Viewer Custom Styles */
+#homePage > div {
+  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border-radius: 1rem;
+  background: #fff;
+  padding: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+#homePage > div:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+  transform: translateY(-2px) scale(1.02);
+}
+model-viewer {
+  border-radius: 0.75rem;
+  background: #f3f4f6;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  margin-bottom: 0.5rem;
+}
+#togglePage, #importForm button {
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+#togglePage:hover, #importForm button:hover {
+  background: #2563eb;
+  transform: scale(1.04);
+}
+#importForm {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+#importForm input[type="text"], #importForm input[type="file"] {
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  transition: border 0.2s;
+}
+#importForm input:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+}
+@media (max-width: 640px) {
+  body {
+    padding: 0.5rem;
+  }
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+  #homePage {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem;
+  }
+  #homePage > div {
+    padding: 0.75rem;
+  }
+  #importForm {
+    padding: 1rem;
+    max-width: 98vw;
+  }
+  #importForm input, #importForm button {
+    font-size: 0.95rem;
+    padding: 0.5rem;
+  }
+}
