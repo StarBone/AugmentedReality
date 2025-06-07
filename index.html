@@ -34,6 +34,14 @@
 
   <div id="homePage" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
 
+  <!-- Modal Preview -->
+  <div id="modalPreview" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+    <div class="bg-white rounded-2xl p-6 relative w-11/12 max-w-3xl">
+      <button onclick="closeModalPreview()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+      <model-viewer id="modelViewerModal" src="" ar ar-modes="scene-viewer webxr quick-look" auto-rotate camera-controls shadow-intensity="1" style="width: 100%; height: 500px"></model-viewer>
+    </div>
+  </div>
+
   <script>
     const homePage = document.getElementById('homePage');
 
@@ -43,7 +51,7 @@
       if (data) {
         data.forEach(model => {
           const card = document.createElement('div');
-          card.className = 'bg-white p-4 rounded-xl shadow relative';
+          card.className = 'bg-white p-4 rounded-xl shadow relative flex flex-col';
           card.innerHTML = `
             <button class="delete-btn absolute md:top-5 top-3 md:right-5 right-3 p-2 bg-red-500 bg-opacity-80 hover:bg-red-700 rounded-full transition" title="Hapus Model" data-id="${model.id}">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -54,7 +62,8 @@
               </svg>
             </button>
             <h2 class="font-semibold text-2xl mb-3">${model.name}</h2>
-            <model-viewer src="${model.url}" ar auto-rotate camera-controls style="width: 100%; height: 300px;"></model-viewer>
+            <model-viewer src="${model.url}" ar auto-rotate camera-controls style="width: 100%; height: 220px;"></model-viewer>
+            <button class="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition" onclick="openModalPreview('${model.url}')">Preview Besar</button>
           `;
           homePage.appendChild(card);
           // Tambahkan event listener untuk tombol hapus
@@ -77,8 +86,7 @@
       }
     }
 
-    // Hapus event listener togglePage dan form import
-    // Tambahkan hamburger menu logic
+    // Hamburger menu logic
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('navMenu');
     hamburger.addEventListener('click', () => {
@@ -89,6 +97,20 @@
         navMenu.classList.add('hidden');
       }
     });
+
+    // Modal preview logic
+    function openModalPreview(modelUrl) {
+      const modal = document.getElementById('modalPreview');
+      const modelViewer = document.getElementById('modelViewerModal');
+      modelViewer.setAttribute('src', modelUrl);
+      modal.style.display = 'flex';
+    }
+    function closeModalPreview() {
+      const modal = document.getElementById('modalPreview');
+      modal.style.display = 'none';
+      const modelViewer = document.getElementById('modelViewerModal');
+      modelViewer.setAttribute('src', '');
+    }
 
     fetchModels();
   </script>
