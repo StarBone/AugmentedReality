@@ -1,58 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AR Model Viewer</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    const client = window.supabase.createClient('https://bgtzemfgqfbxjhbvuept.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJndHplbWZncWZieGpoYnZ1ZXB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMzYzMDEsImV4cCI6MjA2NDcxMjMwMX0.6H1jQoDvcZ9GwDXbIkCBnHq_A0tk19jcXIPwmXTexlo');
-  </script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="style.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 min-h-screen py-4 px-10">
-  <div class="flex flex-col sm:flex-row sm:justify-between mb-4 items-start sm:items-center">
-    <div class="flex items-center w-full justify-between bg-white from-blue-50 via-white to-green-50 rounded-2xl shadow-md px-4 py-2 border border-blue-100">
-      <div class="flex items-center gap-3">
-        <h1 class="text-xl sm:text-1xl font-bold bg-black from-blue-600 via-green-400 to-blue-500 bg-clip-text text-transparent drop-shadow-lg tracking-tight">AR Model Viewer</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real Estate AR</title>
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+      const client = window.supabase.createClient(
+        "https://bgtzemfgqfbxjhbvuept.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJndHplbWZncWZieGpoYnZ1ZXB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMzYzMDEsImV4cCI6MjA2NDcxMjMwMX0.6H1jQoDvcZ9GwDXbIkCBnHq_A0tk19jcXIPwmXTexlo"
+      );
+    </script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-100 min-h-screen py-4 px-10">
+    <div
+      class="flex flex-col sm:flex-row sm:justify-between mb-4 items-start sm:items-center"
+    >
+      <div
+        class="flex items-center w-full justify-between bg-white from-blue-50 via-white to-green-50 rounded-2xl shadow-md px-4 py-2 border border-blue-100"
+      >
+        <div class="flex items-center gap-3">
+          <h1
+            class="text-xl sm:text-1xl font-bold bg-black from-blue-600 via-green-400 to-blue-500 bg-clip-text text-transparent drop-shadow-lg tracking-tight"
+          >
+            Real Estate AR
+          </h1>
+        </div>
+        <div class="flex items-center">
+          <button
+            id="hamburger"
+            class="sm:hidden block p-2 focus:outline-none rounded-lg border border-blue-200 bg-white shadow transition hover:bg-blue-50 active:scale-95 ml-2"
+          >
+            <svg
+              class="w-8 h-8 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </button>
+          <nav
+            id="navMenu"
+            class="hidden sm:flex flex-col sm:flex-row gap-2 sm:gap-1 absolute sm:static right-4 top-20 bg-white sm:bg-transparent rounded-xl shadow-lg sm:shadow-none p-4 sm:p-0 z-50 border border-blue-100 sm:border-0 transition-all duration-200"
+          >
+            <a
+              href="index.html"
+              class="block px-4 py-2 rounded-lg text-blue-700 font-bold underline hover:bg-blue-50 transition"
+              >Home</a
+            >
+            <a
+              href="import.html"
+              class="block px-4 py-2 rounded-lg text-blue-500 hover:underline hover:bg-blue-50 transition"
+              >Import Model</a
+            >
+          </nav>
+        </div>
       </div>
-      <div class="flex items-center">
-        <button id="hamburger" class="sm:hidden block p-2 focus:outline-none rounded-lg border border-blue-200 bg-white shadow transition hover:bg-blue-50 active:scale-95 ml-2">
-          <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
+    </div>
+
+    <div
+      id="homePage"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+    ></div>
+
+    <!-- Modal Preview -->
+    <div
+      id="modalPreview"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      style="display: none"
+    >
+      <div class="bg-white rounded-2xl p-6 relative w-11/12 max-w-3xl">
+        <button
+          onclick="closeModalPreview()"
+          class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-2xl"
+        >
+          &times;
         </button>
-        <nav id="navMenu" class="hidden sm:flex flex-col sm:flex-row gap-2 sm:gap-1 absolute sm:static right-4 top-20 bg-white sm:bg-transparent rounded-xl shadow-lg sm:shadow-none p-4 sm:p-0 z-50 border border-blue-100 sm:border-0 transition-all duration-200">
-          <a href="index.html" class="block px-4 py-2 rounded-lg text-blue-700 font-bold underline hover:bg-blue-50 transition">Home</a>
-          <a href="import.html" class="block px-4 py-2 rounded-lg text-blue-500 hover:underline hover:bg-blue-50 transition">Import Model</a>
-        </nav>
+        <model-viewer
+          id="modelViewerModal"
+          src=""
+          ar
+          ar-modes="scene-viewer webxr quick-look"
+          auto-rotate
+          camera-controls
+          shadow-intensity="1"
+          style="width: 100%; height: 500px"
+        ></model-viewer>
       </div>
     </div>
-  </div>
 
-  <div id="homePage" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+    <script>
+      const homePage = document.getElementById("homePage");
 
-  <!-- Modal Preview -->
-  <div id="modalPreview" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-    <div class="bg-white rounded-2xl p-6 relative w-11/12 max-w-3xl">
-      <button onclick="closeModalPreview()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-      <model-viewer id="modelViewerModal" src="" ar ar-modes="scene-viewer webxr quick-look" auto-rotate camera-controls shadow-intensity="1" style="width: 100%; height: 500px"></model-viewer>
-    </div>
-  </div>
-
-  <script>
-    const homePage = document.getElementById('homePage');
-
-    async function fetchModels() {
-      const { data, error } = await client.from('models').select('*');
-      homePage.innerHTML = '';
-      if (data) {
-        data.forEach(model => {
-          const card = document.createElement('div');
-          card.className = 'bg-white p-4 rounded-xl shadow relative flex flex-col';
-          card.innerHTML = `
+      async function fetchModels() {
+        const { data, error } = await client.from("models").select("*");
+        homePage.innerHTML = "";
+        if (data) {
+          data.forEach((model) => {
+            const card = document.createElement("div");
+            card.className =
+              "bg-white p-4 rounded-xl shadow relative flex flex-col";
+            card.innerHTML = `
             <button class="delete-btn absolute md:top-5 top-3 md:right-5 right-3 p-2 bg-red-500 bg-opacity-80 hover:bg-red-700 rounded-full transition" title="Hapus Model" data-id="${model.id}">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -63,76 +127,76 @@
             </button>
             <h2 class="font-semibold text-2xl mb-3">${model.name}</h2>
             <model-viewer src="${model.url}" ar auto-rotate camera-controls style="width: 100%; height: 220px;"></model-viewer>
-            <button class="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition" onclick="openModalPreview('${model.url}')">Preview Besar</button>
+            <button class="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition" onclick="openModalPreview('${model.url}')">View</button>
           `;
-          homePage.appendChild(card);
-          // Tambahkan event listener untuk tombol hapus
-          const deleteBtn = card.querySelector('.delete-btn');
-          if (deleteBtn) {
-            deleteBtn.addEventListener('click', async (e) => {
-              e.stopPropagation();
-              if (confirm('Yakin ingin menghapus model ini?')) {
-                // Hapus dari storage
-                const urlParts = model.url.split('/');
-                const fileName = urlParts[urlParts.length - 1].split('?')[0];
-                await client.storage.from('models').remove([fileName]);
-                // Hapus dari database
-                await client.from('models').delete().eq('id', model.id);
-                fetchModels();
-              }
-            });
-          }
-        });
+            homePage.appendChild(card);
+            const deleteBtn = card.querySelector(".delete-btn");
+            if (deleteBtn) {
+              deleteBtn.addEventListener("click", async (e) => {
+                e.stopPropagation();
+                if (confirm("Yakin ingin menghapus model ini?")) {
+                  // Hapus dari storage
+                  const urlParts = model.url.split("/");
+                  const fileName = urlParts[urlParts.length - 1].split("?")[0];
+                  await client.storage.from("models").remove([fileName]);
+                  // Hapus dari database
+                  await client.from("models").delete().eq("id", model.id);
+                  fetchModels();
+                }
+              });
+            }
+          });
+        }
       }
-    }
 
-    // Hamburger menu logic
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('navMenu');
-    hamburger.addEventListener('click', () => {
-      navMenu.classList.toggle('hidden');
-    });
-    document.addEventListener('click', (e) => {
-      if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.add('hidden');
+      // Hamburger menu
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("navMenu");
+      hamburger.addEventListener("click", () => {
+        navMenu.classList.toggle("hidden");
+      });
+      document.addEventListener("click", (e) => {
+        if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+          navMenu.classList.add("hidden");
+        }
+      });
+
+      // Modal preview
+      function openModalPreview(modelUrl) {
+        const modal = document.getElementById("modalPreview");
+        const modelViewer = document.getElementById("modelViewerModal");
+        modelViewer.setAttribute("src", modelUrl);
+        modal.style.display = "flex";
       }
-    });
+      function closeModalPreview() {
+        const modal = document.getElementById("modalPreview");
+        modal.style.display = "none";
+        const modelViewer = document.getElementById("modelViewerModal");
+        modelViewer.setAttribute("src", "");
+      }
 
-    // Modal preview logic
-    function openModalPreview(modelUrl) {
-      const modal = document.getElementById('modalPreview');
-      const modelViewer = document.getElementById('modelViewerModal');
-      modelViewer.setAttribute('src', modelUrl);
-      modal.style.display = 'flex';
-    }
-    function closeModalPreview() {
-      const modal = document.getElementById('modalPreview');
-      modal.style.display = 'none';
-      const modelViewer = document.getElementById('modelViewerModal');
-      modelViewer.setAttribute('src', '');
-    }
-
-    fetchModels();
-  </script>
-  <style>
-    /* Hamburger animation */
-    #hamburger:active svg {
-      transform: scale(0.92) rotate(-8deg);
-      filter: drop-shadow(0 2px 6px #3b82f6aa);
-    }
-    #navMenu {
-      min-width: 150px;
-    }
-    #navMenu a {
-      font-size: 1.08rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      transition: background 0.2s, color 0.2s;
-    }
-    #navMenu a.active, #navMenu a:focus {
-      background: linear-gradient(90deg, #2563eb22 0%, #22d3ee22 100%);
-      color: #2563eb;
-    }
-  </style>
-</body>
+      fetchModels();
+    </script>
+    <style>
+      /* Hamburger animation */
+      #hamburger:active svg {
+        transform: scale(0.92) rotate(-8deg);
+        filter: drop-shadow(0 2px 6px #3b82f6aa);
+      }
+      #navMenu {
+        min-width: 150px;
+      }
+      #navMenu a {
+        font-size: 1.08rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        transition: background 0.2s, color 0.2s;
+      }
+      #navMenu a.active,
+      #navMenu a:focus {
+        background: linear-gradient(90deg, #2563eb22 0%, #22d3ee22 100%);
+        color: #2563eb;
+      }
+    </style>
+  </body>
 </html>
